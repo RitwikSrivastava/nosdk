@@ -1,8 +1,10 @@
 {
   "mappings": [
-    "/content/aem-boilerplate/:/"
+    "/content/sdknew/:/",
+    "/content/sdknew/configuration:/.helix/config.json",
+    "/content/sdknew/metadata:/metadata.json"
   ],
   "includes": [
-    "/content/aem-boilerplate/"
+    "/content/sdknew/"
   ]
 }

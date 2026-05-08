@@ -15,7 +15,14 @@
       "hero",
       "cards",
       "columns",
-      "fragment"
+      "fragment",
+      "z-image"
+    ]
+  },
+  {
+    "id": "z-image",
+    "components": [
+      "z-image-item"
     ]
   },
   {
