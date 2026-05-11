@@ -1,6 +1,36 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
+function withWidth(url, width) {
+  try {
+    const u = new URL(url);
+    u.searchParams.set('width', width);
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+function buildResponsivePicture(dmUrl, altText) {
+  const picture = document.createElement('picture');
+
+  // Desktop: ≥ 900px — image panel is 55% of viewport, ~800px
+  const desktop = document.createElement('source');
+  desktop.media = '(min-width: 900px)';
+  desktop.srcset = `${withWidth(dmUrl, 800)} 1x, ${withWidth(dmUrl, 1600)} 2x`;
+  picture.append(desktop);
+
+  // Mobile fallback — stacked full width
+  const img = document.createElement('img');
+  img.src = withWidth(dmUrl, 430);
+  img.srcset = `${withWidth(dmUrl, 430)} 1x, ${withWidth(dmUrl, 860)} 2x`;
+  img.alt = altText;
+  img.loading = 'lazy';
+  picture.append(img);
+
+  return picture;
+}
+
 export default function decorate(block) {
   [...block.children].forEach((row, i) => {
     const item = document.createElement('div');
@@ -14,12 +44,10 @@ export default function decorate(block) {
     const dmUrl = anchor?.href || '';
 
     if (dmUrl) {
-      const img = document.createElement('img');
-      img.src = dmUrl;
-      img.alt = textCells[0]?.querySelector('h2, h3')?.textContent?.trim() || '';
-      img.loading = 'lazy';
+      const altText = textCells[0]?.querySelector('h2, h3')?.textContent?.trim() || '';
+      const picture = buildResponsivePicture(dmUrl, altText);
       imageCell.textContent = '';
-      imageCell.append(img);
+      imageCell.append(picture);
     } else if (imageCell) {
       imageCell.querySelectorAll('picture > img').forEach((img) => {
         const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
