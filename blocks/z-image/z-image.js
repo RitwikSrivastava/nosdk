@@ -14,16 +14,18 @@ function withWidth(url, width) {
 function buildResponsivePicture(dmUrl, altText) {
   const picture = document.createElement('picture');
 
-  // Desktop: ≥ 900px — image panel is 55% of viewport, ~800px
   const desktop = document.createElement('source');
   desktop.media = '(min-width: 900px)';
-  desktop.srcset = `${withWidth(dmUrl, 800)} 1x, ${withWidth(dmUrl, 1600)} 2x`;
+  desktop.srcset = withWidth(dmUrl, 800);
   picture.append(desktop);
 
-  // Mobile fallback — stacked full width
+  const tablet = document.createElement('source');
+  tablet.media = '(min-width: 600px)';
+  tablet.srcset = withWidth(dmUrl, 600);
+  picture.append(tablet);
+
   const img = document.createElement('img');
-  img.src = withWidth(dmUrl, 430);
-  img.srcset = `${withWidth(dmUrl, 430)} 1x, ${withWidth(dmUrl, 860)} 2x`;
+  img.src = withWidth(dmUrl, 480);
   img.alt = altText;
   img.loading = 'lazy';
   picture.append(img);

@@ -14,16 +14,18 @@ function withWidth(url, width) {
 function buildResponsivePicture(dmUrl) {
   const picture = document.createElement('picture');
 
-  // Tablet / Desktop: ≥ 600px (card is ~300–400px in the grid)
-  const wide = document.createElement('source');
-  wide.media = '(min-width: 600px)';
-  wide.srcset = `${withWidth(dmUrl, 400)} 1x, ${withWidth(dmUrl, 800)} 2x`;
-  picture.append(wide);
+  const desktop = document.createElement('source');
+  desktop.media = '(min-width: 900px)';
+  desktop.srcset = withWidth(dmUrl, 400);
+  picture.append(desktop);
 
-  // Mobile fallback — card is nearly full viewport width
+  const tablet = document.createElement('source');
+  tablet.media = '(min-width: 600px)';
+  tablet.srcset = withWidth(dmUrl, 350);
+  picture.append(tablet);
+
   const img = document.createElement('img');
-  img.src = withWidth(dmUrl, 430);
-  img.srcset = `${withWidth(dmUrl, 430)} 1x, ${withWidth(dmUrl, 860)} 2x`;
+  img.src = withWidth(dmUrl, 480);
   img.loading = 'lazy';
   picture.append(img);
 
