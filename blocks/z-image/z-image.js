@@ -1,31 +1,21 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
-function withWidth(url, width) {
-  try {
-    const u = new URL(url);
-    u.searchParams.set('width', width);
-    return u.toString();
-  } catch {
-    return url;
-  }
-}
-
 function buildResponsivePicture(dmUrl, altText) {
   const picture = document.createElement('picture');
 
   const desktop = document.createElement('source');
   desktop.media = '(min-width: 900px)';
-  desktop.srcset = withWidth(dmUrl, 800);
+  desktop.srcset = dmUrl;
   picture.append(desktop);
 
   const tablet = document.createElement('source');
   tablet.media = '(min-width: 600px)';
-  tablet.srcset = withWidth(dmUrl, 600);
+  tablet.srcset = dmUrl;
   picture.append(tablet);
 
   const img = document.createElement('img');
-  img.src = withWidth(dmUrl, 480);
+  img.src = dmUrl;
   img.alt = altText;
   img.loading = 'lazy';
   picture.append(img);
